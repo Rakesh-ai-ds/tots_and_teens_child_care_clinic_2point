@@ -18,7 +18,7 @@ export function Hero() {
       
       <div 
         className="absolute inset-0 opacity-30 bg-center bg-cover bg-no-repeat"
-        style={{ backgroundImage: `url('/WhatsApp Image 2025-10-26 at 20.24.23_823e7c40.jpg')` }}
+        style={{ backgroundImage: `url('/logo.png')` }}
       ></div>
       
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background"></div>

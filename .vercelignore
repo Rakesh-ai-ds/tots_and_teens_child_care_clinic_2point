@@ -1,6 +1,10 @@
-# Ignore local development files
-.env
-.local/
-
-# The server directory is not used in the deployment
-server/
+node_modules
+.git
+.env.local
+.env*.local
+%USERPROFILE%
+attached_assets
+*.log
+.DS_Store
+*.test.ts
+*.test.tsx

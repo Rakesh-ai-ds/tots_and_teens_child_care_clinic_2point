@@ -4,16 +4,6 @@ import { Resend } from "resend";
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { type Appointment } from "../shared/schema";
 
-// Validate environment variables at build/start time
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY must be set.");
-}
-if (!process.env.RESEND_FROM_EMAIL) {
-  throw new Error("RESEND_FROM_EMAIL must be set.");
-}
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function getClientConfirmationEmail(appointment: Appointment) {
   const subject = `Appointment Confirmation - Tots and Teens Child Care Clinic`;
   
@@ -373,6 +363,23 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
+
+  // Validate environment variables
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY is not set");
+    return res.status(500).json({
+      message: "Server configuration error. Please contact support.",
+    });
+  }
+  
+  if (!process.env.RESEND_FROM_EMAIL) {
+    console.error("RESEND_FROM_EMAIL is not set");
+    return res.status(500).json({
+      message: "Server configuration error. Please contact support.",
+    });
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     const appointment = {

@@ -46,14 +46,14 @@ export function Footer() {
           <div>
             <h4 className="font-heading font-semibold text-lg mb-4">Contact Us</h4>
             <div className="space-y-3 text-sm opacity-90">
-              <div className="flex items-start gap-3">
+              <a href="https://maps.app.goo.gl/HNLBr8nnDPBPnWrK7" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 hover:opacity-100 transition-opacity">
                 <MapPin className="h-5 w-5 flex-shrink-0" />
                 <div>
                   <p>Arisipalayam Main Rd,</p>
                   <p>Near St. Mary's School,</p>
                   <p>Salem, Tamil Nadu 636009</p>
                 </div>
-              </div>
+              </a>
               <a href="tel:+916379238880" className="flex items-center gap-3 hover:opacity-100 transition-opacity">
                 <Phone className="h-5 w-5 flex-shrink-0" />
                 <span>63792 38880</span>

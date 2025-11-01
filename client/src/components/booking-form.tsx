@@ -120,7 +120,7 @@ export function BookingForm() {
   };
 
   return (
-    <section id="booking-form" className="py-12 md:py-20 bg-muted/30" data-testid="section-booking-form">
+    <section id="booking-form" className="py-12 md:py-20 bg-muted/30 scroll-mt-20" data-testid="section-booking-form">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-10 md:mb-12">
           <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
@@ -160,8 +160,7 @@ export function BookingForm() {
                         <Input 
                           placeholder="Enter your full name" 
                           {...field} 
-                          className="p-4 rounded-lg border-2"
-                          data-testid="input-parent-name"
+                          className="p-3 rounded-lg border-2" data-testid="input-parent-name"
                         />
                       </FormControl>
                       <FormMessage />
@@ -181,8 +180,7 @@ export function BookingForm() {
                         <Input 
                           placeholder="Enter child's full name" 
                           {...field}
-                          className="p-4 rounded-lg border-2"
-                          data-testid="input-child-name"
+                          className="p-3 rounded-lg border-2"
                         />
                       </FormControl>
                       <FormMessage />
@@ -204,7 +202,7 @@ export function BookingForm() {
                           placeholder="Age in years" 
                           {...field}
                           onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          className="p-4 rounded-lg border-2"
+                          className="p-3 rounded-lg border-2"
                           data-testid="input-child-age"
                         />
                       </FormControl>
@@ -226,8 +224,7 @@ export function BookingForm() {
                           type="tel" 
                           placeholder="10 digit mobile number" 
                           {...field}
-                          className="p-4 rounded-lg border-2"
-                          data-testid="input-phone"
+                          className="p-3 rounded-lg border-2"
                         />
                       </FormControl>
                       <FormMessage />
@@ -248,8 +245,7 @@ export function BookingForm() {
                           type="email" 
                           placeholder="your.email@example.com" 
                           {...field}
-                          className="p-4 rounded-lg border-2"
-                          data-testid="input-email"
+                          className="p-3 rounded-lg border-2"
                         />
                       </FormControl>
                       <FormMessage />
@@ -267,7 +263,7 @@ export function BookingForm() {
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="p-4 rounded-lg border-2" data-testid="select-service">
+                          <SelectTrigger className="p-3 rounded-lg border-2" data-testid="select-service">
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
                         </FormControl>
@@ -299,8 +295,7 @@ export function BookingForm() {
                             value={field.value}
                             onChange={(e) => handleDateChange(e.target.value, field.onChange)}
                             min={getMinDate()}
-                            className="p-4 rounded-lg border-2"
-                            data-testid="input-date"
+                            className="p-3 rounded-lg border-2"
                           />
                           <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
                         </div>
@@ -321,7 +316,7 @@ export function BookingForm() {
                       </FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="p-4 rounded-lg border-2" data-testid="select-time">
+                          <SelectTrigger className="p-3 rounded-lg border-2" data-testid="select-time">
                             <SelectValue placeholder="Select a time slot" />
                           </SelectTrigger>
                         </FormControl>
@@ -361,7 +356,7 @@ export function BookingForm() {
 
                 <Button 
                   type="submit" 
-                  className="w-full md:w-auto md:min-w-64 md:mx-auto md:flex px-12 py-6 text-lg font-heading font-medium rounded-full shadow-lg"
+                  className="w-full px-12 py-6 text-lg font-heading font-medium rounded-full shadow-lg"
                   disabled={bookingMutation.isPending}
                   data-testid="button-submit-booking"
                 >

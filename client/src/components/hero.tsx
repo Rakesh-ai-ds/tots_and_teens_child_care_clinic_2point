@@ -12,10 +12,10 @@ export function Hero() {
 
   return (
     <section 
-      className="relative pt-20 md:pt-24 pb-12 md:pb-20 overflow-hidden"
+      className="relative pt-16 pb-8 md:pt-24 md:pb-20 overflow-hidden"
       data-testid="section-hero"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20"></div>
       
       <div 
         className="absolute inset-0 opacity-30 bg-center bg-cover bg-no-repeat"
@@ -26,11 +26,11 @@ export function Hero() {
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-4 md:mb-6 leading-tight">
+          <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl text-foreground mb-4 md:mb-6 leading-tight">
             TOTS AND TEENS CHILD CARE CLINIC
           </h2>
           
-          <p className="text-base md:text-lg lg:text-xl text-foreground/90 mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-foreground/90 mb-8 md:mb-10 leading-relaxed max-w-2xl mx-auto">
             Expert care for every stage of your child's growth, from infancy to adolescence.
           </p>
           
@@ -48,7 +48,7 @@ export function Hero() {
           <Button 
             size="lg"
             onClick={scrollToBooking}
-            className="px-8 md:px-12 py-4 md:py-6 text-base md:text-lg font-heading font-medium rounded-full shadow-lg"
+            className="px-8 py-4 text-base font-heading font-medium rounded-full shadow-lg"
             data-testid="button-book-appointment-hero"
           >
             Book Your Appointment Today

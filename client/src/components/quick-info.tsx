@@ -14,12 +14,15 @@ export function QuickInfo() {
             </div>
           </div>
           
-          <div className="flex flex-col items-center gap-2" data-testid="info-location">
+          <div className="flex flex-col items-center gap-2 text-center" data-testid="info-location">
             <MapPin className="h-6 w-6" />
             <div>
               <p className="font-heading font-semibold text-sm md:text-base">Location</p>
-              <p className="text-xs md:text-sm opacity-90">Arisipalayam Main Rd, Salem</p>
-              <p className="text-xs opacity-75">Near St. Mary's School</p>
+              <p className="text-xs md:text-sm opacity-90">St. Mary's Higher Secondary School</p>
+              <p className="text-xs md:text-sm opacity-90">Arisipalayam Main Rd,</p>
+              <p className="text-xs md:text-sm opacity-90">Arisipalayam, Salem,</p>
+              <p className="text-xs md:text-sm opacity-90">Tamil Nadu 636009</p>
+              <p className="text-xs opacity-75"></p>
             </div>
           </div>
           

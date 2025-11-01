@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Phone, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +17,24 @@ export function Header() {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (sectionId === '#') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      const element = document.querySelector(sectionId);
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -43,11 +63,47 @@ export function Header() {
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-base font-medium text-foreground hover:text-primary transition-colors">Home</a>
-            <a href="#doctor-profile" className="text-base font-medium text-foreground hover:text-primary transition-colors">About</a>
-            <a href="#services" className="text-base font-medium text-foreground hover:text-primary transition-colors">Our Services</a>
-            <a href="#booking-form" className="text-base font-medium text-foreground hover:text-primary transition-colors">Book Appointment</a>
+          <nav className="hidden md:flex items-center gap-8">
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#');
+              }} 
+              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+            >
+              Home
+            </a>
+            <a 
+              href="#services" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#services');
+              }} 
+              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+            >
+              Services
+            </a>
+            <a 
+              href="#booking-form" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#booking-form');
+              }} 
+              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+            >
+              Book Appointment
+            </a>
+            <a 
+              href="#doctor-profile" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#doctor-profile');
+              }} 
+              className="text-base font-semibold text-white bg-[#FF6B81] hover:bg-[#ff5a72] px-4 py-2 rounded-full transition-colors duration-300"
+            >
+              About
+            </a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -71,16 +127,68 @@ export function Header() {
         </div>
       </div>
 
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-background shadow-lg">
-          <nav className="flex flex-col items-center gap-4 p-4">
-            <a href="#" className="text-base font-medium text-foreground hover:text-primary transition-colors" onClick={toggleMobileMenu}>Home</a>
-            <a href="#services" className="text-base font-medium text-foreground hover:text-primary transition-colors" onClick={toggleMobileMenu}>Our Services</a>
-            <a href="#booking-form" className="text-base font-medium text-foreground hover:text-primary transition-colors" onClick={toggleMobileMenu}>Book Appointment</a>
-            <a href="#doctor-profile" className="text-base font-medium text-foreground hover:text-primary transition-colors" onClick={toggleMobileMenu}>About</a>
-          </nav>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            ref={menuRef}
+            className="md:hidden bg-background/95 backdrop-blur-sm shadow-lg overflow-hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ 
+              opacity: 1, 
+              height: 'auto',
+              transition: { 
+                duration: 0.3,
+                ease: 'easeInOut'
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0,
+              transition: { 
+                duration: 0.2,
+                ease: 'easeInOut'
+              }
+            }}
+          >
+            <nav className="flex flex-col items-center gap-4 p-6">
+              {[
+                { label: 'Home', href: '#' },
+                { label: 'Services', href: '#services' },
+                { label: 'Book Appointment', href: '#booking-form' },
+                { label: 'About', href: '#doctor-profile', isHighlighted: true }
+              ].map((item, index) => (
+                <motion.a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.href);
+                  }}
+                  className={`w-full text-center text-lg font-semibold py-3 px-6 rounded-full transition-colors duration-300 ${
+                    item.isHighlighted 
+                      ? 'bg-[#FF6B81] text-white hover:bg-[#ff5a72]' 
+                      : 'text-foreground/90 hover:text-[#FF6B81] hover:bg-muted/50'
+                  }`}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ 
+                    x: 0, 
+                    opacity: 1,
+                    transition: { 
+                      delay: index * 0.1,
+                      duration: 0.3,
+                      ease: 'easeOut'
+                    }
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {item.label}
+                </motion.a>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

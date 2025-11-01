@@ -8,8 +8,8 @@ import { useState } from 'react';
 const credentials = [
   "MBBS (Stanley Medical College)",
   "M.D. Paediatrics (GMKMCH, Salem)",
-  "PGDDN (Developmental Neurology)",
-  "PGDAP (Adolescent Paediatrics)",
+  "Post Graduate Diploma in Developmental Neurology",
+  "Post Graduate Diploma in Adolescent Paediatrics",
 ];
 
 const expertise = [
@@ -87,42 +87,6 @@ export function DoctorProfile() {
             </div>
           </Card>
         </div>
-        <div className="mt-12 md:mt-20">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-foreground text-center mb-8">
-              Our Location
-            </h2>
-            <div className="relative" onClick={() => setMapActive(true)}>
-              <div className={`absolute inset-0 bg-transparent ${isMapActive ? 'hidden' : ''}`}></div>
-              <iframe
-                src="https://maps.google.com/maps?q=Tots%20and%20Teens%20child%20care%20clinic&ll=11.661641113318609,78.14553004698911&z=14&amp;output=embed"
-                width="100%"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Tots & Teens Speciality Clinic Location"
-              ></iframe>
-              {!isMapActive && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg font-semibold">
-                  Click to interact with the map
-                </div>
-              )}
-            </div>
-            <div className="text-center mt-4">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=11.661641113318609,78.14553004698911"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90"
-                >
-                  Get Directions
-                </a>
-              </motion.div>
-            </div>
-            <SocialMediaBar />
-          </div>
       </div>
     </section>
   );

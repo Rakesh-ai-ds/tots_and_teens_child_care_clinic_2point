@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch server/index.ts",
-    "build": "vite build",
+    "build": "cd client && vite build",
     "start": "echo 'Use Vercel serverless functions; no start script needed'",
     "check": "tsc"
   },

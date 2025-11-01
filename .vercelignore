@@ -1,2 +1,6 @@
+# Ignore local development files
+.env
+.local/
+
+# The server directory is not used in the deployment
 server/
-*.ts

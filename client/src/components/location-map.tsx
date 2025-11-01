@@ -1,6 +1,6 @@
 'use client';
 
-import { MapPin } from "lucide-react";
+import { MapPin, Phone } from "lucide-react";
 import { Button } from "./ui/button";
 import { SiWhatsapp } from "react-icons/si";
 import { Instagram } from "lucide-react";

@@ -2,7 +2,9 @@ import { motion } from "framer-motion";
 import { SocialMediaBar } from "@/components/social-media-bar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, GraduationCap, Award } from "lucide-react";
+import { CheckCircle2, GraduationCap, Award, BookOpen, HeartPulse } from "lucide-react";
+import { Button } from "./ui/button";
+import Link from "next/link";
 import { useState } from 'react';
 
 const credentials = [
@@ -16,6 +18,13 @@ const expertise = [
   "Child Specialist",
   "Child Developmental Neurologist",
   "Adolescent Pediatrician",
+];
+
+const achievements = [
+  "13+ years of clinical experience in pediatric care",
+  "Published research in national pediatric journals",
+  "Regular speaker at pediatric conferences",
+  "Mentored 50+ medical students and residents"
 ];
 
 export function DoctorProfile() {
@@ -67,21 +76,53 @@ export function DoctorProfile() {
                   </p>
                 </div>
 
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <Award className="h-5 w-5 text-secondary" />
-                    <h4 className="font-heading font-semibold text-lg text-foreground">
-                      Education & Qualifications
-                    </h4>
+                <div className="space-y-8">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Award className="h-5 w-5 text-secondary" />
+                      <h4 className="font-heading font-semibold text-lg text-foreground">
+                        Education & Qualifications
+                      </h4>
+                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {credentials.map((credential, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
+                          <span className="text-sm md:text-base text-foreground/90">{credential}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-3">
-                    {credentials.map((credential, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
-                        <span className="text-sm md:text-base text-foreground/90">{credential}</span>
-                      </li>
-                    ))}
-                  </ul>
+
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <HeartPulse className="h-5 w-5 text-secondary" />
+                      <h4 className="font-heading font-semibold text-lg text-foreground">
+                        Professional Achievements
+                      </h4>
+                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {achievements.map((achievement, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <BookOpen className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
+                          <span className="text-sm md:text-base text-foreground/90">{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white">
+                      <Link href="#contact">
+                        Book an Appointment
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="lg" asChild>
+                      <Link href="#testimonials">
+                        Patient Testimonials
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

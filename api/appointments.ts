@@ -1,6 +1,20 @@
-import { type Appointment } from "@shared/schema";
 
-export function getClientConfirmationEmail(appointment: Appointment) {
+// api/appointments.ts
+import { Resend } from "resend";
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { type Appointment } from "../shared/schema";
+
+// Validate environment variables at build/start time
+if (!process.env.RESEND_API_KEY) {
+  throw new Error("RESEND_API_KEY must be set.");
+}
+if (!process.env.RESEND_FROM_EMAIL) {
+  throw new Error("RESEND_FROM_EMAIL must be set.");
+}
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+function getClientConfirmationEmail(appointment: Appointment) {
   const subject = `Appointment Confirmation - Tots and Teens Child Care Clinic`;
   
   const html = `
@@ -196,7 +210,7 @@ export function getClientConfirmationEmail(appointment: Appointment) {
   return { subject, html };
 }
 
-export function getClinicNotificationEmail(appointment: Appointment) {
+function getClinicNotificationEmail(appointment: Appointment) {
   const subject = `New Appointment Booking - ${appointment.childName}`;
   
   const html = `
@@ -350,4 +364,48 @@ export function getClinicNotificationEmail(appointment: Appointment) {
   `;
 
   return { subject, html };
+}
+
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  try {
+    const appointment = {
+      ...req.body,
+      id: crypto.randomUUID(),
+      createdAt: new Date(),
+    };
+
+    const clientEmail = getClientConfirmationEmail(appointment);
+    const clinicEmail = getClinicNotificationEmail(appointment);
+
+    await Promise.all([
+      resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL!,
+        to: appointment.email,
+        subject: clientEmail.subject,
+        html: clientEmail.html,
+      }),
+      resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL!,
+        to: "rakeshrevathi2006@gmail.com",
+        subject: clinicEmail.subject,
+        html: clinicEmail.html,
+      }),
+    ]);
+
+    return res.status(200).json({
+      message: "Appointment received and email sent (no database storage)",
+    });
+  } catch (error) {
+    console.error("Appointment booking error:", error);
+    return res.status(500).json({
+      message: "Failed to process appointment. Please try again.",
+    });
+  }
 }

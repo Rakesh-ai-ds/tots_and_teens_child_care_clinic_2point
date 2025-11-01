@@ -34,14 +34,8 @@ export function Hero() {
           </p>
           
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-8 md:mb-12">
-            <div className="flex items-center gap-2 px-4 py-2 bg-background/90 backdrop-blur-sm rounded-full shadow-sm">
-              <Award className="h-5 w-5 text-primary" />
-              <span className="font-medium text-sm md:text-base text-foreground">13 Years of Clinical Experience</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-background/90 backdrop-blur-sm rounded-full shadow-sm">
-              <Users className="h-5 w-5 text-secondary" />
-              <span className="font-medium text-sm md:text-base text-foreground">Trusted by 3000+ Families</span>
-            </div>
+            <div className="flex items-center gap-2 px-4 py-2 bg-card backdrop-blur-sm rounded-full shadow-sm">
+            <div className="flex items-center gap-2 px-4 py-2 bg-card backdrop-blur-sm rounded-full shadow-sm">
           </div>
           
           <Button 

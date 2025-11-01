@@ -45,7 +45,7 @@ export function DoctorProfile() {
                   <p className="text-sm text-muted-foreground mb-3">Paediatrician</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {expertise.map((exp, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
+                      <Badge key={index} variant="accent" className="text-xs">
                         {exp}
                       </Badge>
                     ))}

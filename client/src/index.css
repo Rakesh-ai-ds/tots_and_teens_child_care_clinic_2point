@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --border: 220 13% 91%; /* hsl values for light mode */
+  * {
+    @apply border-border;
   }
 
-  .dark {
-    --border: 217 19% 24%;
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -59,7 +61,7 @@
 
   --foreground: 210 10% 90%;
 
-  --border: 210 8% 16%;
+  --border: 217 19% 24%;
 
   --card: 210 6% 10%;
 

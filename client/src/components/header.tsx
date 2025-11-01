@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Phone, Menu, X } from "lucide-react";
-import logoImage from "@assets/generated_images/Cute_animals_clinic_logo_0073faa9.png";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +28,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3 md:gap-4">
             <img
-              src={logoImage}
+              src="/logo.png"
               alt="Tots and Teens Child Care Clinic"
               className="h-12 w-12 rounded-full object-cover"
               data-testid="img-logo"

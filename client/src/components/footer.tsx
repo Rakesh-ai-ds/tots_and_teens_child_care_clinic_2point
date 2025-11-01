@@ -1,5 +1,4 @@
 import { MapPin, Phone, Clock, Mail, Instagram } from "lucide-react";
-import logoImage from "@assets/generated_images/Cute_animals_clinic_logo_0073faa9.png";
 
 export function Footer() {
   return (
@@ -9,7 +8,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img 
-                src={logoImage} 
+                src="/logo.png" 
                 alt="Tots and Teens" 
                 className="h-12 w-12 rounded-full"
               />

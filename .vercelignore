@@ -8,3 +8,4 @@ attached_assets
 .DS_Store
 *.test.ts
 *.test.tsx
+server

@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Award, Users } from "lucide-react";
-import animalsImage from "@assets/WhatsApp Image 2025-10-26 at 10.31.52_57e2e3e9_1761471001882.jpg";
 
 export function Hero() {
   const scrollToBooking = () => {
@@ -19,7 +18,7 @@ export function Hero() {
       
       <div 
         className="absolute inset-0 opacity-30 bg-center bg-cover bg-no-repeat"
-        style={{ backgroundImage: `url(${animalsImage})` }}
+        style={{ backgroundImage: `url('/WhatsApp Image 2025-10-26 at 20.24.23_823e7c40.jpg')` }}
       ></div>
       
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background"></div>

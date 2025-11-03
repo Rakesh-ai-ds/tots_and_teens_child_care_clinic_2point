@@ -136,7 +136,4 @@ app.post('/api/appointments', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3002;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+export default app;

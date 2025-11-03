@@ -3,7 +3,24 @@ import { QueryClient, type QueryFunction } from "@tanstack/react-query";
 type HeadersInit = Headers | string[][] | Record<string, string>;
 
 // Base URL for API requests
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').trim();
+
+function joinApiUrl(base: string, endpoint: string): string {
+  // If endpoint is absolute, return as-is
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) return endpoint;
+
+  const normBase = base.replace(/\/$/, ''); // remove trailing /
+  const normPath = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  if (!normBase) return normPath; // no base provided
+
+  // Avoid double /api when base already includes /api and endpoint starts with /api
+  if (normBase.endsWith('/api') && normPath.startsWith('/api/')) {
+    return `${normBase}${normPath.substring(4)}`; // drop leading /api from path
+  }
+
+  return `${normBase}${normPath}`;
+}
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -33,9 +50,7 @@ export async function apiRequest(
   data?: unknown,
 ): Promise<Response> {
   // Ensure endpoint starts with a slash
-  const url = endpoint.startsWith('http') 
-    ? endpoint 
-    : `${API_BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+  const url = joinApiUrl(API_BASE_URL, endpoint);
 
   const headers: Record<string, string> = {
     'Accept': 'application/json',

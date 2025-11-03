@@ -21,14 +21,21 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./app/*"
+        "./client/src/*"
+      ],
+      "@components/*": [
+        "./client/src/components/*"
+      ],
+      "@lib/*": [
+        "./client/src/lib/*"
+      ],
+      "@shared/*": [
+        "./shared/*"
+      ],
+      "@assets/*": [
+        "./attached_assets/*"
       ]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    }
   },
   "include": [
     "next-env.d.ts",

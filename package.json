@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:*",
     "dev:client": "vite",
-    "dev:server": "tsx watch server/index.ts",
+    "dev:server": "tsx watch api/index.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "start": "node server/index.js"
+    "start": "node api/index.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

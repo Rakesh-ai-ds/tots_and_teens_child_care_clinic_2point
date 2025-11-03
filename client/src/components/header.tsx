@@ -85,24 +85,24 @@ export function Header() {
               Services
             </a>
             <a 
-              href="#booking-form" 
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#booking-form');
-              }} 
-              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
-            >
-              Book Appointment
-            </a>
-            <a 
               href="#doctor-profile" 
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('#doctor-profile');
               }} 
-              className="text-base font-semibold text-white bg-[#FF6B81] hover:bg-[#ff5a72] px-4 py-2 rounded-full transition-colors duration-300"
+              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
             >
               About
+            </a>
+            <a 
+              href="#booking-form" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#booking-form');
+              }} 
+              className="text-base font-semibold text-white bg-[#FF6B81] hover:bg-[#ff5a72] px-4 py-2 rounded-full transition-colors duration-300"
+            >
+              Book Appointment
             </a>
           </nav>
 
@@ -154,8 +154,8 @@ export function Header() {
               {[
                 { label: 'Home', href: '#' },
                 { label: 'Services', href: '#services' },
-                { label: 'Book Appointment', href: '#booking-form' },
-                { label: 'About', href: '#doctor-profile', isHighlighted: true }
+                { label: 'About', href: '#doctor-profile' },
+                { label: 'Book Appointment', href: '#booking-form', isHighlighted: true }
               ].map((item, index) => (
                 <motion.a
                   key={item.href}

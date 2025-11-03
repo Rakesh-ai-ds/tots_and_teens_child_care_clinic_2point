@@ -1,8 +1,36 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { insertAppointmentSchema, type InsertAppointment } from "@shared/schema";
+import { z } from "zod";
+import { insertAppointmentSchema as baseInsertAppointmentSchema, type InsertAppointment } from "@shared/schema";
+// Using react-hot-toast for notifications
+import toast from 'react-hot-toast';
+
+// Simple toast wrapper to match the expected interface
+const useToast = () => ({
+  toast: (data: { 
+    title: string; 
+    description?: string; 
+    variant?: 'default' | 'destructive' 
+  }) => {
+    const message = data.description ? `${data.title}: ${data.description}` : data.title;
+    if (data.variant === 'destructive') {
+      toast.error(message, { duration: 5000 });
+    } else {
+      toast.success(message, { duration: 5000 });
+    }
+  }
+});
+
+// Extend the base schema to include childMonths
+const extendedInsertAppointmentSchema = baseInsertAppointmentSchema.extend({
+  childMonths: z.coerce.number().min(0).max(11).default(0),
+});
+
+type ExtendedInsertAppointment = InsertAppointment & {
+  childMonths: number;
+};
 import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,7 +52,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader2, CheckCircle2, Calendar } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 const serviceTypes = [
   "General Pediatrics",
@@ -44,12 +71,13 @@ export function BookingForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<InsertAppointment>({
-    resolver: zodResolver(insertAppointmentSchema),
+  const form = useForm<ExtendedInsertAppointment>({
+    resolver: zodResolver(extendedInsertAppointmentSchema) as any,
     defaultValues: {
       parentName: "",
       childName: "",
       childAge: 0,
+      childMonths: 0,
       phoneNumber: "",
       email: "",
       serviceType: "General Pediatrics",
@@ -60,35 +88,88 @@ export function BookingForm() {
   });
 
   const bookingMutation = useMutation({
-    mutationFn: async (data: InsertAppointment) => {
-      return await apiRequest("POST", "/api/appointments", data);
+    mutationFn: async (data: ExtendedInsertAppointment) => {
+      // Prepare the data for the API
+      const bookingData = {
+        parentName: data.parentName,
+        email: data.email,
+        phoneNumber: data.phoneNumber || '',
+        childName: data.childName || '',
+        childAge: data.childMonths ? `${data.childMonths} months` : '',
+        serviceType: data.serviceType || 'General',
+        preferredDate: data.preferredDate || 'Not specified',
+        preferredTime: data.preferredTime || 'Not specified',
+        additionalNotes: data.additionalNotes || ''
+      };
+      
+      console.log('Sending booking request:', bookingData);
+      
+      // Use the apiRequest function which handles errors and headers
+      const response = await apiRequest('POST', '/appointments', bookingData);
+      return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('Booking successful:', data);
       setIsSuccess(true);
-      form.reset();
-      toast({
-        title: "Appointment Booked Successfully!",
-        description: "You will receive a confirmation email shortly.",
+      
+      // Reset form on success
+      form.reset({
+        parentName: '',
+        childName: '',
+        childMonths: 0,
+        phoneNumber: '',
+        email: '',
+        serviceType: 'General Pediatrics',
+        preferredDate: '',
+        preferredTime: '',
+        additionalNotes: '',
       });
       
+      // Show success message
+      toast({
+        title: 'Success!',
+        description: 'Your appointment has been booked successfully.',
+      });
+      
+      // Scroll to the booking form section
       const bookingSection = document.getElementById("booking-form");
       if (bookingSection) {
         bookingSection.scrollIntoView({ behavior: "smooth", block: "center" });
       }
       
+      // Reset success state after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
+      console.error('Booking error:', error);
+      
+      let errorMessage = error.message || 'Failed to book appointment. Please try again.';
+      
+      // Handle specific error cases
+      if (error.message.includes('Failed to fetch')) {
+        errorMessage = 'Failed to connect to the server. Please check your internet connection.';
+      } else if (error.message.includes('400')) {
+        errorMessage = 'Invalid request. Please check your input and try again.';
+      } else if (error.message.includes('500')) {
+        errorMessage = 'Server error. Please try again later.';
+      }
+      
       toast({
-        title: "Booking Failed",
-        description: error.message || "Please try again later.",
-        variant: "destructive",
+        title: 'Booking Failed',
+        description: errorMessage,
+        variant: 'destructive'
       });
-    },
+    }
   });
 
-  const onSubmit = (data: InsertAppointment) => {
-    bookingMutation.mutate(data);
+  const onSubmit: SubmitHandler<ExtendedInsertAppointment> = (data) => {
+    // Convert to the format expected by the API
+    const { childMonths, ...apiData } = data;
+    // Include childMonths in the API data
+    bookingMutation.mutate({
+      ...apiData,
+      childMonths: childMonths || 0 // Ensure we always send a number
+    } as ExtendedInsertAppointment);
   };
 
   const getMinDate = () => {
@@ -188,28 +269,94 @@ export function BookingForm() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="childAge"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-heading font-medium text-sm">
-                        Child's Age <span className="text-primary">*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          placeholder="Age in years" 
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          className="p-3 rounded-lg border-2"
-                          data-testid="input-child-age"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="childAge"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-heading font-medium text-sm">
+                          Child's Age <span className="text-primary">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              placeholder="0" 
+                              type="number"
+                              min="0"
+                              step="1"
+                              onKeyDown={(e) => {
+                                if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                                  e.preventDefault();
+                                }
+                              }}
+                              {...field}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value);
+                                if (!isNaN(value) && value >= 0) {
+                                  field.onChange(value);
+                                } else if (e.target.value === '') {
+                                  field.onChange('');
+                                }
+                              }}
+                              className="p-3 rounded-lg border-2 pr-10"
+                              data-testid="input-child-years"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                              {field.value === 1 ? 'year' : 'years'}
+                            </span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="childMonths"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-heading font-medium text-sm">
+                          &nbsp;
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              placeholder="0" 
+                              type="number"
+                              min="0"
+                              max="11"
+                              step="1"
+                              onKeyDown={(e) => {
+                                if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                                  e.preventDefault();
+                                }
+                              }}
+                              {...field}
+                              value={field.value || ''}
+                              onChange={(e) => {
+                                let value = parseInt(e.target.value);
+                                if (isNaN(value)) {
+                                  field.onChange(0);
+                                  return;
+                                }
+                                // Ensure months are between 0 and 11
+                                value = Math.min(11, Math.max(0, value));
+                                field.onChange(value);
+                              }}
+                              className="p-3 rounded-lg border-2 pr-10"
+                              data-testid="input-child-months"
+                            />
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                              {(!field.value || field.value === 1) ? 'month' : 'months'}
+                            </span>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <FormField
                   control={form.control}

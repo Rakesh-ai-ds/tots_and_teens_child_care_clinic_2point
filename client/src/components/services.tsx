@@ -9,21 +9,25 @@ const services = [
     icon: Stethoscope,
     title: "General Pediatrics",
     description: "Comprehensive infant & child health checkups for routine illness, preventative health, and nutritional guidance. Full range of vaccination services.",
-  },
-  {
-    icon: Brain,
-    title: "Developmental Intervention",
-    description: "Early identification & intervention for developmental delay. Specialized care for speech delay, autism, ADHD, and learning disabilities.",
-  },
-  {
-    icon: Users2,
-    title: "Adolescent Health",
-    description: "Confidential consultation covering physical health, behavioral issues, academic performance improvement, digital deaddiction, and weight management.",
+    image: "/General-Pediatrics.jpg"
   },
   {
     icon: Shield,
     title: "Vaccination Services",
     description: "Complete vaccination schedule administered safely and responsibly. Protecting your child's health with immunizations at every stage.",
+    image: "/images/vaccination-service.jpg"
+  },
+  {
+    icon: Users2,
+    title: "Adolescent Health",
+    description: "Confidential consultation covering physical health, behavioral issues, academic performance improvement, digital deaddiction, and weight management.",
+    image: "/adolescent-health.jpg"
+  },
+  {
+    icon: Brain,
+    title: "Developmental Intervention",
+    description: "Early identification & intervention for developmental delay. Specialized care for speech delay, autism, ADHD, and learning disabilities.",
+    image: "/Developmental-Intervention.jpg"
   },
 ];
 
@@ -79,26 +83,27 @@ export function Services() {
     <section 
       ref={sectionRef}
       id="services" 
-      className="py-16 md:py-24 bg-background scroll-mt-20"
+      className="py-16 md:py-24 bg-gradient-to-b from-background to-gray-50/50 scroll-mt-20"
       data-testid="section-services"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <motion.div 
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <h2 className="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
-            Our Services
+          <span className="inline-block text-sm font-semibold text-[#FF6B81] mb-3 tracking-wider">OUR SERVICES</span>
+          <h2 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-foreground mb-4">
+            Expert Care for Your Child
           </h2>
-          <div className="w-20 h-1 bg-[#FF6B81] mx-auto mb-6 rounded-full"></div>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive pediatric care tailored to every stage of your child's development
+          <div className="w-24 h-1.5 bg-[#FF6B81] mx-auto mb-6 rounded-full"></div>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Comprehensive pediatric care designed to support your child's health and development at every stage
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -111,22 +116,40 @@ export function Services() {
                 whileHover="hover"
               >
                 <Card 
-                  className="p-6 md:p-8 transition-all duration-300 cursor-default h-full hover:shadow-lg border-2 border-transparent hover:border-[#FF6B81]/20"
+                  className="p-0 overflow-hidden transition-all duration-300 cursor-default h-full hover:shadow-xl border border-gray-100 hover:border-[#FF6B81]/30 flex flex-col group bg-white"
                   data-testid={`card-service-${index}`}
                 >
-                  <div className="flex flex-col items-center text-center gap-4">
-                    <motion.div 
-                      className="h-16 w-16 md:h-20 md:w-20 rounded-full bg-[#FF6B81]/10 flex items-center justify-center"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <Icon className="h-8 w-8 md:h-10 md:w-10 text-[#FF6B81]" />
-                    </motion.div>
-                    <h3 className="font-heading font-semibold text-xl md:text-2xl text-foreground">
-                      {service.title}
-                    </h3>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                      {service.description}
-                    </p>
+                  {service.image ? (
+                    <div className="relative w-full h-64 md:h-80">
+                      <img 
+                        src={service.image} 
+                        alt=""
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.error('Failed to load image:', service.image, e);
+                          e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNjAwIDQwMCI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNGRjZCODEiLz48dGV4dCB4PSIzMDAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RmFpbGVkIHRvIGxvYWQgaW1hZ2U8L3RleHQ+PC9zdmc+';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300"></div>
+                    </div>
+                  ) : (
+                    <div className="h-64 md:h-80 bg-gradient-to-br from-[#FF6B81]/5 to-[#FF6B81]/10"></div>
+                  )}
+                  
+                  <div className="p-6 md:p-8 flex-1 flex flex-col">
+                    <div className="flex items-start mb-3">
+                      <div className="h-12 w-12 rounded-full bg-[#FF6B81]/10 flex items-center justify-center flex-shrink-0 mr-4 mt-1">
+                        <Icon className="h-6 w-6 text-[#FF6B81]" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground">
+                          {service.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed mt-2">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </Card>
               </motion.div>

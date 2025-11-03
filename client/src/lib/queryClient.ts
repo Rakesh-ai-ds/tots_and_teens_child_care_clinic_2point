@@ -1,22 +1,55 @@
-import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { QueryClient, type QueryFunction } from "@tanstack/react-query";
+
+type HeadersInit = Headers | string[][] | Record<string, string>;
+
+// Base URL for API requests
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
+    let errorMessage = `Request failed with status ${res.status}`;
+    const resClone = res.clone(); // Clone the response
+    try {
+      const errorData = await resClone.json();
+      errorMessage = errorData.message || errorData.error || errorMessage;
+    } catch (e) {
+      try {
+        const text = await res.text();
+        if (text) errorMessage = text;
+      } catch (e2) {
+        // Ignore error from reading text
+      }
+    }
+    throw new Error(errorMessage);
   }
 }
 
+/**
+ * Make an API request with proper error handling and content type
+ */
 export async function apiRequest(
   method: string,
-  url: string,
-  data?: unknown | undefined,
+  endpoint: string,
+  data?: unknown,
 ): Promise<Response> {
+  // Ensure endpoint starts with a slash
+  const url = endpoint.startsWith('http') 
+    ? endpoint 
+    : `${API_BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+
+  const headers: Record<string, string> = {
+    'Accept': 'application/json',
+  };
+  
+  if (data) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
+    credentials: 'include',
   });
 
   await throwIfResNotOk(res);

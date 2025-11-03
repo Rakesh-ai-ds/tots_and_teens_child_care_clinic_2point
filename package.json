@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:*",
     "dev:client": "vite",
-    "dev:server": "tsx watch api/index.ts",
+    "dev:server": "tsx watch server/index.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "start": "node api/index.js",
+    "start": "node server/index.js",
     "test:email": "node test-email.js"
   },
   "dependencies": {

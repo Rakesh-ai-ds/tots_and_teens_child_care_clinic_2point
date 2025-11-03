@@ -46,6 +46,13 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "client/src/components/booking-form-clean.tsx",
+    "client/src/components/booking-form-fixed-2.tsx",
+    "client/src/components/booking-form-fixed-v2.tsx",
+    "client/src/components/booking-form-fixed.tsx",
+    "client/src/components/booking-form-new-2.tsx",
+    "client/src/components/booking-form-new-clean.tsx",
+    "client/src/components/booking-form-new.tsx"
   ]
 }

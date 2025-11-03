@@ -27,7 +27,7 @@ function getEnvVariable(key: string): string {
   return value;
 }
 
-app.post('/api/appointments', async (req, res) => {
+app.post('/appointments', async (req, res) => {
   try {
     const resendApiKey = getEnvVariable('RESEND_API_KEY');
     const fromEmail = getEnvVariable('RESEND_FROM_EMAIL');

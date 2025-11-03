@@ -105,7 +105,7 @@ export function BookingForm() {
       console.log('Sending booking request:', bookingData);
       
       // Use the apiRequest function which handles errors and headers
-      const response = await apiRequest('POST', '/appointments', bookingData);
+      const response = await apiRequest('POST', '/api/appointments', bookingData);
       return await response.json();
     },
     onSuccess: (data) => {

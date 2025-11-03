@@ -110,3 +110,4 @@ RESEND_API_KEY=your_key_here
 RESEND_FROM_EMAIL=noreply@yourdomain.com
 ```
 
+

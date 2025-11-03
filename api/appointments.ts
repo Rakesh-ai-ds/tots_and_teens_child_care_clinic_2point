@@ -1,11 +1,4 @@
-import express from 'express';
 import { Resend } from 'resend';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const app = express();
-app.use(express.json());
 
 interface AppointmentData {
   parentName: string;
@@ -27,18 +20,20 @@ function getEnvVariable(key: string): string {
   return value;
 }
 
-// Shared handler to support both '/appointments' and '/api/appointments' in local dev
-const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) => {
+export default async function handler(req: any, res: any) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
     const resendApiKey = getEnvVariable('RESEND_API_KEY');
     const fromEmail = getEnvVariable('RESEND_FROM_EMAIL');
     const clinicEmail = getEnvVariable('CLINIC_EMAIL');
 
-    const body = req.body as Partial<AppointmentData & { phoneNumber?: string }>;
+    const body = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as Partial<AppointmentData & { phoneNumber?: string }>;
 
     const requiredFields: (keyof AppointmentData)[] = ['parentName', 'email', 'childName', 'serviceType'];
     const missingFields = requiredFields.filter(field => !body[field]);
-
     if (missingFields.length > 0) {
       return res.status(400).json({ error: 'Missing required fields', missingFields });
     }
@@ -57,11 +52,8 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
       createdAt: new Date(),
     };
 
-    console.log('Processing appointment:', JSON.stringify(appointment, null, 2));
-
     const resend = new Resend(resendApiKey);
 
-    console.log('Sending emails...');
     const sendWithRetry = async (payload: Parameters<typeof resend.emails.send>[0], maxAttempts = 4) => {
       let attempt = 0;
       while (attempt < maxAttempts) {
@@ -78,7 +70,7 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
       }
     };
 
-    const emailPromise = Promise.all([
+    await Promise.all([
       sendWithRetry({
         from: fromEmail,
         to: [appointment.email],
@@ -86,18 +78,14 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; border: 1px solid #eee; padding: 20px;">
             <h2 style="color: #333;">Thank you for your booking, ${appointment.parentName}!</h2>
-            <p>Your appointment for <strong>${appointment.childName}</strong> has been successfully scheduled.</p>
-            
+            <p>Your appointment for <strong>${appointment.childName}</strong> has been received.</p>
             <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
               <h3 style="margin-top: 0;">Appointment Details:</h3>
               <p><strong>Service:</strong> ${appointment.serviceType}</p>
               <p><strong>Date:</strong> ${appointment.preferredDate}</p>
               <p><strong>Time:</strong> ${appointment.preferredTime}</p>
             </div>
-
-            <p>If you have any questions, please contact us at <a href="mailto:${clinicEmail}">${clinicEmail}</a>.</p>
-            <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #999;">This is an automated message. Please do not reply.</p>
+            <p>If you have questions, contact us at <a href="mailto:${clinicEmail}">${clinicEmail}</a>.</p>
           </div>
         `,
       }),
@@ -108,7 +96,6 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; border: 1px solid #eee; padding: 20px;">
             <h2 style="color: #4f46e5;">New Appointment Notification</h2>
-            
             <div style="background-color: #f9fafb; padding: 15px; border-radius: 8px;">
               <p><strong>Parent:</strong> ${appointment.parentName}</p>
               <p><strong>Child:</strong> ${appointment.childName} (${appointment.childAge})</p>
@@ -119,7 +106,6 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
               <p><strong>Contact Phone:</strong> ${appointment.phone}</p>
               <p><strong>Additional Notes:</strong> ${appointment.additionalNotes}</p>
             </div>
-            
             <p style="margin-top: 20px;"><strong>Appointment ID:</strong> ${appointment.id}</p>
             <p><strong>Booked On:</strong> ${appointment.createdAt.toLocaleString()}</p>
           </div>
@@ -127,61 +113,30 @@ const handleAppointmentPost: Parameters<typeof app.post>[1] = async (req, res) =
       }),
     ]);
 
-    console.log('Waiting for emails to be sent...');
+    return res.status(200).json({
+      success: true,
+      message: 'Appointment booked successfully! Confirmation emails have been sent.',
+      appointmentId: appointment.id,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    const sandboxRestriction = typeof message === 'string' && (
+      message.includes('You can only send testing emails') ||
+      message.includes('verify a domain') ||
+      message.includes('domain is not verified')
+    );
 
-    emailPromise.then(() => {
-      console.log('Emails sent successfully!');
+    if (sandboxRestriction) {
+      console.warn('Resend sandbox restriction encountered. Returning success to avoid blocking booking.');
       return res.status(200).json({
         success: true,
-        message: 'Appointment booked successfully! Confirmation emails have been sent.',
-        appointmentId: appointment.id,
+        message: 'Appointment booked. Emails not sent due to Resend sandbox restriction. Verify a domain to enable live sends.',
+        warning: message,
       });
-    }).catch(error => {
-      console.error('Error sending emails:', error);
-      const message = error instanceof Error ? error.message : (typeof error === 'string' ? error : 'Failed to send emails.');
-
-      const sandboxRestriction = typeof message === 'string' && (
-        message.includes('You can only send testing emails') ||
-        message.includes('verify a domain') ||
-        message.includes('domain is not verified')
-      );
-
-      if (sandboxRestriction) {
-        console.warn('Resend sandbox restriction encountered. Returning success to avoid blocking booking.');
-        return res.status(200).json({
-          success: true,
-          message: 'Appointment booked. Emails not sent due to Resend sandbox restriction. Verify a domain to enable live sends.',
-          appointmentId: appointment.id,
-          warning: message,
-        });
-      }
-
-      return res.status(500).json({ error: message });
-    });
-
-  } catch (error) {
-    console.error('Error processing appointment:', error);
-    
-    let errorMessage = 'Failed to process appointment.';
-    if (error instanceof Error) {
-      errorMessage = error.message;
     }
-    
-    return res.status(500).json({ error: errorMessage });
+
+    return res.status(500).json({ error: message });
   }
-};
-
-// Local dev route
-app.post('/appointments', handleAppointmentPost);
-// Also support '/api/appointments' so the client can call the same path locally
-app.post('/api/appointments', handleAppointmentPost);
-
-export default app;
-
-// Start server in local development so Vite proxy can reach it
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT ? Number(process.env.PORT) : 3002;
-  app.listen(PORT, () => {
-    console.log(`API server listening on http://localhost:${PORT}`);
-  });
 }
+
+

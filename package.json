@@ -10,7 +10,8 @@
     "dev:server": "tsx watch api/index.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "start": "node api/index.js"
+    "start": "node api/index.js",
+    "test:email": "node test-email.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

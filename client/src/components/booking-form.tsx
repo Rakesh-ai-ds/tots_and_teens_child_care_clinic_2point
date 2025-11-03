@@ -93,7 +93,7 @@ export function BookingForm() {
       const bookingData = {
         parentName: data.parentName,
         email: data.email,
-        phoneNumber: data.phoneNumber || '',
+        phone: data.phoneNumber || '',
         childName: data.childName || '',
         childAge: data.childMonths ? `${data.childMonths} months` : '',
         serviceType: data.serviceType || 'General',

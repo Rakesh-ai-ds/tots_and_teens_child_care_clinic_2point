@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getUncachableResendClient } from '../server/resend';
+import { getUncachableResendClient } from './resend';
 
 type LoggableData = {
   type: string;

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUncachableResendClient } from '../../../../server/resend';
+import { getUncachableResendClient } from '@lib/resend';
 
 // Environment variables with proper typing
 declare const process: {

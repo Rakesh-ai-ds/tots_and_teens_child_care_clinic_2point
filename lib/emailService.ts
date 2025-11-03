@@ -129,6 +129,10 @@ export const sendBookingNotification = async (bookingData: BookingData) => {
   try {
     const { client: resend, fromEmail } = await getUncachableResendClient();
     const emailSubject = `New Booking: ${childName} - ${serviceType}`;
+
+    if (!fromEmail) {
+      throw new Error('RESEND_FROM_EMAIL is not set.');
+    }
     
     const { data, error } = await resend.emails.send({
       from: fromEmail,

@@ -27,7 +27,7 @@
         "./client/src/components/*"
       ],
       "@lib/*": [
-        "./client/src/lib/*"
+        "./lib/*"
       ],
       "@shared/*": [
         "./shared/*"

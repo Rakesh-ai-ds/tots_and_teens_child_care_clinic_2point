@@ -110,18 +110,6 @@ export function DoctorProfile() {
                     </ul>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="#contact" className="inline-block">
-                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-white w-full">
-                        Book an Appointment
-                      </Button>
-                    </a>
-                    <a href="#testimonials" className="inline-block">
-                      <Button variant="outline" size="lg" className="w-full">
-                        Patient Testimonials
-                      </Button>
-                    </a>
-                  </div>
                 </div>
               </div>
             </div>

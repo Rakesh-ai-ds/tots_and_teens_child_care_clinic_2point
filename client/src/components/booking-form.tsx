@@ -503,7 +503,7 @@ export function BookingForm() {
 
                 <Button 
                   type="submit" 
-                  className="w-full px-12 py-6 text-lg font-heading font-medium rounded-full shadow-lg"
+                  className="w-full px-12 py-6 text-lg font-heading font-medium rounded-full shadow-lg bg-[#FF3366] hover:bg-[#FF1A4D] text-white hover:shadow-xl transition-all duration-300"
                   disabled={bookingMutation.isPending}
                   data-testid="button-submit-booking"
                 >

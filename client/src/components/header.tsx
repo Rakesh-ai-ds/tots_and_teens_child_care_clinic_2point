@@ -19,22 +19,45 @@ export function Header() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const scrollToSection = (sectionId: string) => {
-    if (sectionId === '#') {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else {
-      const element = document.querySelector(sectionId);
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+  // Handle clicks outside the mobile menu to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
-    }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    // Close mobile menu if open
     setIsMobileMenuOpen(false);
+    
+    // Small delay to ensure menu is closed before scrolling
+    setTimeout(() => {
+      if (sectionId === '#') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        const element = document.querySelector(sectionId);
+        if (element) {
+          const headerOffset = 80; // Height of your header
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }, 100);
   };
 
   return (
@@ -70,7 +93,7 @@ export function Header() {
                 e.preventDefault();
                 scrollToSection('#');
               }} 
-              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+              className="text-base font-semibold text-foreground hover:text-[#FF3366] transition-colors duration-300"
             >
               Home
             </a>
@@ -80,7 +103,7 @@ export function Header() {
                 e.preventDefault();
                 scrollToSection('#services');
               }} 
-              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+              className="text-base font-semibold text-foreground hover:text-[#FF3366] transition-colors duration-300"
             >
               Services
             </a>
@@ -90,7 +113,7 @@ export function Header() {
                 e.preventDefault();
                 scrollToSection('#doctor-profile');
               }} 
-              className="text-base font-semibold text-foreground hover:text-[#FF6B81] transition-colors duration-300"
+              className="text-base font-semibold text-foreground hover:text-[#FF3366] transition-colors duration-300"
             >
               About
             </a>
@@ -100,7 +123,7 @@ export function Header() {
                 e.preventDefault();
                 scrollToSection('#booking-form');
               }} 
-              className="text-base font-semibold text-white bg-[#FF6B81] hover:bg-[#ff5a72] px-4 py-2 rounded-full transition-colors duration-300"
+              className="text-base font-semibold text-white bg-[#FF3366] hover:bg-[#FF1A4D] px-4 py-2 rounded-full transition-colors duration-300 shadow-md hover:shadow-lg"
             >
               Book Appointment
             </a>
@@ -109,7 +132,7 @@ export function Header() {
           <div className="flex items-center gap-2">
             <a
               href="tel:+916379238880"
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-medium text-sm hover-elevate active-elevate-2 transition-transform"
+              className="flex items-center gap-2 px-4 py-2 bg-[#FF3366] text-white rounded-full font-medium text-sm hover:bg-[#FF1A4D] transition-all duration-300 shadow-md hover:shadow-lg"
               data-testid="link-call-header"
             >
               <Phone className="h-4 w-4" />
@@ -166,8 +189,8 @@ export function Header() {
                   }}
                   className={`w-full text-center text-lg font-semibold py-3 px-6 rounded-full transition-colors duration-300 ${
                     item.isHighlighted 
-                      ? 'bg-[#FF6B81] text-white hover:bg-[#ff5a72]' 
-                      : 'text-foreground/90 hover:text-[#FF6B81] hover:bg-muted/50'
+                      ? 'bg-[#FF3366] text-white hover:bg-[#FF1A4D] shadow-md hover:shadow-lg' 
+                      : 'text-foreground/90 hover:text-[#FF3366] hover:bg-muted/50'
                   }`}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ 

@@ -43,7 +43,7 @@ export default function Home() {
                 href="https://maps.app.goo.gl/VRcDfqYDeK7Xn7Ud6"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#FF6B81] hover:bg-[#FF6B81]/90 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FF3366] hover:bg-[#FF1A4D] shadow-md hover:shadow-lg transition-all duration-300"
               >
                 <MapPin className="h-5 w-5 mr-2" />
                 Get Directions to Tots and Teens Child Care Clinic

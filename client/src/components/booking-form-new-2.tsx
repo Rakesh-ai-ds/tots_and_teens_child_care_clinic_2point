@@ -291,7 +291,7 @@ export function BookingForm() {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full"
+            className="w-full bg-[#FF3366] hover:bg-[#FF1A4D] text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300"
             disabled={bookingMutation.isPending}
           >
             {bookingMutation.isPending ? (

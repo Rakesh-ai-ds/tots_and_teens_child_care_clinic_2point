@@ -47,7 +47,7 @@ export function Hero() {
           <Button 
             size="lg"
             onClick={scrollToBooking}
-            className="px-8 py-4 text-base font-heading font-medium rounded-full shadow-lg"
+            className="bg-[#FF3366] hover:bg-[#FF1A4D] text-white text-base font-medium px-8 h-12 shadow-md hover:shadow-lg transition-all duration-300 rounded-full shadow-lg"
             data-testid="button-book-appointment-hero"
           >
             Book Your Appointment Today

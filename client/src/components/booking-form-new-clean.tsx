@@ -293,10 +293,11 @@ export function BookingForm() {
 
           {/* Submit Button */}
           <div className="flex justify-center">
-            <Button 
-              type="submit" 
-              className="w-full md:w-auto px-8 py-6 text-lg"
+            <button 
+              type="submit"
               disabled={bookingMutation.isPending}
+              className="w-full md:w-auto px-6 py-3 text-base font-semibold bg-[#FF3366] hover:bg-[#FF1A4D] text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: '#FF3366' }}
             >
               {bookingMutation.isPending ? (
                 <>
@@ -306,7 +307,7 @@ export function BookingForm() {
               ) : (
                 'Book Appointment'
               )}
-            </Button>
+            </button>
           </div>
         </form>
       </Form>

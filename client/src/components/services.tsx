@@ -8,7 +8,12 @@ const services = [
   {
     icon: Stethoscope,
     title: "General Pediatrics",
-    description: "Comprehensive infant & child health checkups for routine illness, preventative health, and nutritional guidance. Full range of vaccination services.",
+    items: [
+      "Regular Health Check-up",
+      "Growth Monitoring",
+      "Routine illness.",
+      "Nutritional Guidance."
+    ],
     image: "/General-Pediatrics.jpg"
   },
   {
@@ -20,7 +25,14 @@ const services = [
   {
     icon: Users2,
     title: "Adolescent Health",
-    description: "Confidential consultation covering physical health, behavioral issues, academic performance improvement, digital deaddiction, and weight management.",
+    prefix: "Confidential Consultation for",
+    items: [
+      "Physical health",
+      "Behavioral issues",
+      "Academic performance",
+      "Digital deaddiction",
+      "Obesity management."
+    ],
     image: "/adolescent-health.jpg"
   },
   {
@@ -145,9 +157,25 @@ export function Services() {
                         <h3 className="font-heading font-bold text-xl md:text-2xl text-foreground">
                           {service.title}
                         </h3>
-                        <p className="text-gray-600 leading-relaxed mt-2">
-                          {service.description}
-                        </p>
+                        {service.items ? (
+                          <div className="text-gray-600 leading-relaxed mt-2">
+                            {service.prefix && (
+                              <p className="mb-2">{service.prefix}</p>
+                            )}
+                            <ul className="space-y-1.5 list-none">
+                              {service.items.map((item, idx) => (
+                                <li key={idx} className="flex items-center">
+                                  <span className="text-[#FF6B81] mr-2 flex-shrink-0">•</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <p className="text-gray-600 leading-relaxed mt-2">
+                            {service.description}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>

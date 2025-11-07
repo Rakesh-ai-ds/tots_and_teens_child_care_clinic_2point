@@ -9,8 +9,8 @@ import { useState } from 'react';
 const credentials = [
   "MBBS (Stanley Medical College)",
   "M.D. Paediatrics (GMKMCH, Salem)",
-  "Post Graduate Diploma in Developmental Neurology",
-  "Post Graduate Diploma in Adolescent Paediatrics",
+  "Post Graduate Diploma in Developmental Neurology (Kerala University, Thiruvananthapuram)",
+  "Post Graduate Diploma in Adolescent Paediatrics (Kerala University, Thiruvananthapuram)",
 ];
 
 const expertise = [

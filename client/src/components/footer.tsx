@@ -48,8 +48,9 @@ export function Footer() {
               <a href="https://maps.app.goo.gl/HNLBr8nnDPBPnWrK7" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 hover:opacity-100 transition-opacity">
                 <MapPin className="h-5 w-5 flex-shrink-0" />
                 <div>
+                  <p>NEW SRI VIJAYA MEDICAL</p>
                   <p>Arisipalayam Main Rd,</p>
-                  <p>Near St. Mary's School,</p>
+                  <p>opposite to St. Mary's School,</p>
                   <p>Salem, Tamil Nadu 636009</p>
                 </div>
               </a>

@@ -46,7 +46,7 @@ export default function Home() {
                 className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FF3366] hover:bg-[#FF1A4D] shadow-md hover:shadow-lg transition-all duration-300"
               >
                 <MapPin className="h-5 w-5 mr-2" />
-                Get Directions to Tots and Teens Child Care Clinic
+                View larger map
               </a>
             </div>
           </div>

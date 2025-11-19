@@ -27,10 +27,10 @@ export function ClinicInfo() {
               </div>
               <h3 className="font-heading font-semibold text-lg mb-2">Location</h3>
               <div className="space-y-1">
-                <p className="text-foreground/90">St. Mary's Higher Secondary School</p>
+                <p className="text-foreground/90">NEW SRI VIJAYA MEDICAL</p>
                 <p className="text-foreground/90">Arisipalayam Main Rd,</p>
-                <p className="text-foreground/90">Arisipalayam, Salem,</p>
-                <p className="text-foreground/90">Tamil Nadu 636009</p>
+                <p className="text-foreground/90">opposite to St. Mary's School,</p>
+                <p className="text-foreground/90">Salem, Tamil Nadu 636009</p>
               </div>
             </div>
           </div>

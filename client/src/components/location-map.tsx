@@ -44,10 +44,10 @@ export function LocationMap() {
               </div>
               
               <p className="text-foreground/90 mb-6">
-                St. Mary's Higher Secondary School,<br />
+                NEW SRI VIJAYA MEDICAL<br />
                 Arisipalayam Main Rd,<br />
-                Arisipalayam, Salem,<br />
-                Tamil Nadu 636009
+                opposite to St. Mary's School,<br />
+                Salem, Tamil Nadu 636009
               </p>
               
               <div className="space-y-4">

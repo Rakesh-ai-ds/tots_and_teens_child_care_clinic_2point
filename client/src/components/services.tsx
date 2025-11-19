@@ -14,13 +14,13 @@ const services = [
       "Routine illness.",
       "Nutritional Guidance."
     ],
-    image: "/General-Pediatrics.jpg"
+    image: null
   },
   {
     icon: Shield,
     title: "Vaccination Services",
     description: "Complete vaccination schedule administered safely and responsibly. Protecting your child's health with immunizations at every stage.",
-    image: "/images/vaccination-service.jpg"
+    image: null
   },
   {
     icon: Users2,
@@ -33,13 +33,13 @@ const services = [
       "Digital deaddiction",
       "Obesity management."
     ],
-    image: "/adolescent-health.jpg"
+    image: null
   },
   {
     icon: Brain,
     title: "Developmental Intervention",
     description: "Early identification & intervention for developmental delay. Specialized care for speech delay, autism, ADHD, and learning disabilities.",
-    image: "/Developmental-Intervention.jpg"
+    image: null
   },
 ];
 
@@ -131,22 +131,6 @@ export function Services() {
                   className="p-0 overflow-hidden transition-all duration-300 cursor-default h-full hover:shadow-xl border border-gray-100 hover:border-[#FF6B81]/30 flex flex-col group bg-white"
                   data-testid={`card-service-${index}`}
                 >
-                  {service.image ? (
-                    <div className="relative w-full h-64 md:h-80">
-                      <img 
-                        src={service.image} 
-                        alt=""
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          console.error('Failed to load image:', service.image, e);
-                          e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNjAwIDQwMCI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNGRjZCODEiLz48dGV4dCB4PSIzMDAiIHk9IjIwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RmFpbGVkIHRvIGxvYWQgaW1hZ2U8L3RleHQ+PC9zdmc+';
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all duration-300"></div>
-                    </div>
-                  ) : (
-                    <div className="h-64 md:h-80 bg-gradient-to-br from-[#FF6B81]/5 to-[#FF6B81]/10"></div>
-                  )}
                   
                   <div className="p-6 md:p-8 flex-1 flex flex-col">
                     <div className="flex items-start mb-3">

@@ -17,14 +17,14 @@ if (!process.env.RESEND_FROM_EMAIL) {
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const testEmail = process.argv[2] || 'rakeshrevathi2006@gmail.com';
+const testEmail = process.argv[2] || 'drkcvgvsa@gmail.com';
 
 async function sendTestEmail() {
   try {
     console.log('🚀 Attempting to send test email...');
     console.log(`📧 From: ${process.env.RESEND_FROM_EMAIL}`);
     console.log(`📩 To: ${testEmail}`);
-    
+
     const data = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL,
       to: testEmail,
@@ -47,11 +47,11 @@ async function sendTestEmail() {
     console.log('✅ Email sent successfully!');
     console.log('Email ID:', data.id);
     console.log('Check your inbox (and spam folder) for the test email.');
-    
+
   } catch (error) {
     console.error('❌ Error sending email:');
     console.error(error);
-    
+
     if (error.response) {
       console.error('Response data:', error.response.data);
       console.error('Status:', error.response.status);

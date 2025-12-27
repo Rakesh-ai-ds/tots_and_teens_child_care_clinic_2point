@@ -17,7 +17,7 @@ async function testEmail() {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'no-reply@totsandteens.com';
-  const toEmail = process.env.CLINIC_EMAIL || 'rakeshrevathi2006@gmail.com';
+  const toEmail = process.env.CLINIC_EMAIL || 'drkcvgvsa@gmail.com';
 
   console.log('🚀 Testing email configuration...');
   console.log(`From: ${fromEmail}`);
@@ -26,7 +26,7 @@ async function testEmail() {
 
   try {
     console.log('📨 Sending test email...');
-    
+
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
@@ -48,19 +48,19 @@ async function testEmail() {
     if (error) {
       console.error('❌ Error sending email:');
       console.error(JSON.stringify(error, null, 2));
-      
+
       if (error.message.includes('invalid')) {
         console.log('\n🔑 It looks like there might be an issue with your Resend API key.');
         console.log('Please verify your RESEND_API_KEY in the .env file.');
         console.log('You can find your API key at: https://resend.com/api-keys');
       }
-      
+
       if (error.message.includes('from')) {
         console.log('\n📧 There might be an issue with your sender email address.');
         console.log('Please verify your RESEND_FROM_EMAIL in the .env file.');
         console.log('Make sure this email is verified in your Resend dashboard.');
       }
-      
+
       return;
     }
 
@@ -70,7 +70,7 @@ async function testEmail() {
     console.log('1. Check your email inbox (and spam folder) for the test email');
     console.log('2. If you received the email, your setup is working correctly!');
     console.log('3. If not, check your Resend dashboard for any errors: https://resend.com/emails');
-    
+
   } catch (error) {
     console.error('❌ Unexpected error:');
     console.error(error);

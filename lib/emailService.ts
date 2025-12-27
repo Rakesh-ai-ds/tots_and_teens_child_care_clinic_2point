@@ -26,7 +26,7 @@ const LOG_FILE = path.join(process.cwd(), 'bookings.log');
 const logData = (data: LoggableData) => {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] ${JSON.stringify(data)}\n`;
-  
+
   fs.appendFile(LOG_FILE, logEntry, (err: NodeJS.ErrnoException | null) => {
     if (err) console.error('Error writing to log file:', err);
   });
@@ -90,8 +90,8 @@ const buildEmailTemplate = (data: BookingData): string => {
 // Email service with fallback to file logging
 export const sendBookingNotification = async (bookingData: BookingData) => {
   const { parentName, email, childName = 'N/A', serviceType = 'General' } = bookingData;
-  const clinicEmail = process.env.CLINIC_EMAIL || 'rakeshrevathi2006@gmail.com';
-  
+  const clinicEmail = process.env.CLINIC_EMAIL || 'drkcvgvsa@gmail.com';
+
   // Create a log entry for the booking attempt
   const logEntry: LoggableData = {
     type: 'booking_attempt',
@@ -114,12 +114,12 @@ export const sendBookingNotification = async (bookingData: BookingData) => {
       data: bookingData,
       timestamp: new Date().toISOString()
     };
-    
+
     console.log('\n=== NEW BOOKING (Not sent - Development Mode) ===');
     console.log(JSON.stringify(logInfo, null, 2));
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       message: 'Booking logged (development mode)',
       data: logInfo
     };
@@ -133,7 +133,7 @@ export const sendBookingNotification = async (bookingData: BookingData) => {
     if (!fromEmail) {
       throw new Error('RESEND_FROM_EMAIL is not set.');
     }
-    
+
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: clinicEmail,
@@ -144,9 +144,9 @@ export const sendBookingNotification = async (bookingData: BookingData) => {
     if (error) {
       throw new Error(error.message);
     }
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       message: 'Booking received and confirmation email sent',
       data: {
         to: clinicEmail,
@@ -157,16 +157,16 @@ export const sendBookingNotification = async (bookingData: BookingData) => {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error in sendBookingNotification:', error);
-    
+
     logData({
       type: 'error',
       error: errorMessage,
       timestamp: new Date().toISOString(),
       bookingData
     });
-    
-    return { 
-      success: false, 
+
+    return {
+      success: false,
       message: 'Error processing booking',
       error: errorMessage
     };

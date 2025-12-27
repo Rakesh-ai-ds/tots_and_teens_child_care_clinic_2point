@@ -1,14 +1,15 @@
 // simple-test.js
+import 'dotenv/config';
 import { Resend } from 'resend';
 
-// Replace 're_your_api_key_here' with your actual Resend API key
-const resend = new Resend('re_your_api_key_here');
+// Use API key from environment variables
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendTestEmail() {
   try {
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'rakeshrevathi2006@gmail.com',
+      to: 'drkcvgvsa@gmail.com',
       subject: 'Test from Resend',
       html: '<strong>Hello from Resend! This is a test email.</strong>',
     });

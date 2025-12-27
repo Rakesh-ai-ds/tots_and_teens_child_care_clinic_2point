@@ -6,7 +6,7 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://totsandteens.vercel.app/sitemap.xml
+Sitemap: https://totsandteenschildcareclinic.com/sitemap.xml
 
 # Block AI Crawlers (optional - protects content)
 User-agent: GPTBot
@@ -50,4 +50,4 @@ User-agent: YandexBot
 Allow: /
 
 # Host directive
-Host: https://totsandteens.vercel.app
+Host: https://totsandteenschildcareclinic.com

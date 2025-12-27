@@ -3,6 +3,7 @@
     "short_name": "Tots & Teens",
     "description": "Expert pediatric care for every stage of your child's growth. Book appointments with Dr. Amudhadevi S. in Salem.",
     "start_url": "/",
+    "id": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#FF6B6B",

@@ -34,56 +34,182 @@ const logData = (data: LoggableData) => {
 
 // Build HTML email template
 const buildEmailTemplate = (data: BookingData): string => {
-  const bookedOn = new Date().toLocaleString('en-US', {
+  // Get current time in IST (Indian Standard Time)
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+  const istTime = new Date(now.getTime() + istOffset);
+
+  const bookedOn = istTime.toLocaleString('en-IN', {
     timeZone: 'Asia/Kolkata',
+    weekday: 'long',
     year: 'numeric',
-    month: 'numeric',
+    month: 'long',
     day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
     hour12: true,
   });
 
   return `
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f4f7fc; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;">
-      <div style="background: linear-gradient(135deg, #6a11cb, #2575fc); color: #ffffff; padding: 40px; text-align: center;">
-        <h1 style="margin: 0; font-size: 32px; font-weight: 700;">🎉 New Appointment! 🎉</h1>
-        <p style="margin: 10px 0 0; font-size: 18px; opacity: 0.9;">A new booking has been made at Tots and Teens Clinic.</p>
-      </div>
-      <div style="padding: 30px 40px; background-color: #ffffff;">
-        <h2 style="color: #6a11cb; font-size: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 25px; font-weight: 600;">Booking Details</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tbody style="font-size: 16px; color: #333;">
-            <tr>
-              <td style="padding: 12px 0; color: #555; font-weight: bold; width: 40%;">👤 Parent's Name:</td>
-              <td style="padding: 12px 0; color: #2d3748;">${data.parentName}</td>
-            </tr>
-            <tr>
-              <td style="padding: 12px 0; color: #555; font-weight: bold;">📧 Email:</td>
-              <td style="padding: 12px 0; color: #2d3748;">${data.email}</td>
-            </tr>
-            ${data.phone ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">📞 Phone:</td><td style="padding: 12px 0; color: #2d3748;">${data.phone}</td></tr>` : ''}
-            ${data.childName ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">👶 Child's Name:</td><td style="padding: 12px 0; color: #2d3748;">${data.childName}</td></tr>` : ''}
-            ${data.childAge ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">🎂 Child's Age:</td><td style="padding: 12px 0; color: #2d3748;">${data.childAge}</td></tr>` : ''}
-            <tr>
-              <td style="padding: 12px 0; color: #555; font-weight: bold;">🩺 Service Type:</td>
-              <td style="padding: 12px 0; color: #2d3748;">${data.serviceType}</td>
-            </tr>
-            ${data.preferredDate ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">🗓️ Preferred Date:</td><td style="padding: 12px 0; color: #2d3748;">${data.preferredDate}</td></tr>` : ''}
-            ${data.preferredTime ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">⏰ Preferred Time:</td><td style="padding: 12px 0; color: #2d3748;">${data.preferredTime}</td></tr>` : ''}
-            ${data.additionalNotes ? `<tr><td style="padding: 12px 0; color: #555; font-weight: bold;">📝 Additional Notes:</td><td style="padding: 12px 0; color: #2d3748;">${data.additionalNotes}</td></tr>` : ''}
-          </tbody>
-        </table>
-        <p style="margin-top: 30px; font-size: 16px; color: #4a5568; line-height: 1.6;">
-          Please ensure to confirm this appointment with the parent. If you need to reschedule, please contact them directly.
-        </p>
-      </div>
-      <div style="background-color: #e2e8f0; padding: 25px 40px; font-size: 14px; color: #4a5568; text-align: center;">
-        <p style="margin: 0 0 10px;">This is an automated notification from the Tots and Teens Clinic booking system.</p>
-        <p style="margin: 0;"><strong>Booked On:</strong> ${bookedOn}</p>
-      </div>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 40px 20px;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+              
+              <!-- Header with Clinic Branding -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); padding: 40px 30px; text-align: center;">
+                  <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px;">
+                    � TOTS AND TEENS
+                  </h1>
+                  <p style="margin: 8px 0 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">
+                    Child Care Clinic
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- Main Content -->
+              <tr>
+                <td style="padding: 40px 30px;">
+                  <!-- Notification Badge -->
+                  <div style="text-align: center; margin-bottom: 30px;">
+                    <span style="background: linear-gradient(135deg, #4ECDC4 0%, #44B8AE 100%); color: #ffffff; padding: 10px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; display: inline-block;">
+                      ✨ New Appointment Request
+                    </span>
+                  </div>
+                  
+                  <h2 style="margin: 0 0 25px; font-size: 22px; color: #2C3E50; font-weight: 600; text-align: center;">
+                    Appointment Details
+                  </h2>
+                  
+                  <!-- Details Card -->
+                  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-radius: 12px; overflow: hidden;">
+                    <tr>
+                      <td style="padding: 25px;">
+                        
+                        <!-- Parent Info -->
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                          <tr>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">👤 Parent/Guardian</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 16px; font-weight: 600;">${data.parentName}</p>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <!-- Contact Info -->
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                          <tr>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">📧 Email</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 15px; font-weight: 500;">${data.email}</p>
+                            </td>
+                            ${data.phone ? `
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">📞 Phone</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 15px; font-weight: 600;">${data.phone}</p>
+                            </td>
+                            ` : ''}
+                          </tr>
+                        </table>
+                        
+                        <!-- Child Info -->
+                        ${data.childName ? `
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                          <tr>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">👶 Child's Name</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 16px; font-weight: 600;">${data.childName}</p>
+                            </td>
+                            ${data.childAge ? `
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">🎂 Age</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 16px; font-weight: 600;">${data.childAge}</p>
+                            </td>
+                            ` : ''}
+                          </tr>
+                        </table>
+                        ` : ''}
+                        
+                        <!-- Service Type - Highlighted -->
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                          <tr>
+                            <td style="padding: 15px; background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); border-radius: 8px;">
+                              <span style="color: rgba(255,255,255,0.9); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">🩺 Service Requested</span>
+                              <p style="margin: 6px 0 0; color: #ffffff; font-size: 18px; font-weight: 700;">${data.serviceType}</p>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        <!-- Date & Time -->
+                        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                          <tr>
+                            ${data.preferredDate ? `
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">🗓️ Preferred Date</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 15px; font-weight: 600;">${data.preferredDate}</p>
+                            </td>
+                            ` : ''}
+                            ${data.preferredTime ? `
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e2e8f0;" width="50%">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">⏰ Preferred Time</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 15px; font-weight: 600;">${data.preferredTime}</p>
+                            </td>
+                            ` : ''}
+                          </tr>
+                        </table>
+                        
+                        <!-- Additional Notes -->
+                        ${data.additionalNotes ? `
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td style="padding: 12px 0;">
+                              <span style="color: #6b7280; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">📝 Additional Notes</span>
+                              <p style="margin: 6px 0 0; color: #2C3E50; font-size: 15px; line-height: 1.5;">${data.additionalNotes}</p>
+                            </td>
+                          </tr>
+                        </table>
+                        ` : ''}
+                        
+                      </td>
+                    </tr>
+                  </table>
+                  
+                  <!-- Action Reminder -->
+                  <div style="margin-top: 25px; padding: 20px; background-color: #FFF3CD; border-left: 4px solid #FF6B6B; border-radius: 0 8px 8px 0;">
+                    <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.6;">
+                      <strong>⚡ Action Required:</strong> Please confirm this appointment with the parent at the earliest convenience.
+                    </p>
+                  </div>
+                  
+                </td>
+              </tr>
+              
+              <!-- Footer -->
+              <tr>
+                <td style="background-color: #2C3E50; padding: 25px 30px; text-align: center;">
+                  <p style="margin: 0 0 8px; color: rgba(255,255,255,0.7); font-size: 12px;">
+                    📅 Booking received on ${bookedOn} (IST)
+                  </p>
+                  <p style="margin: 0; color: rgba(255,255,255,0.5); font-size: 11px;">
+                    Tots and Teens Child Care Clinic • Expert care for every stage of your child's growth
+                  </p>
+                </td>
+              </tr>
+              
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `;
 };
 
